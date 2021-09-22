@@ -6,14 +6,20 @@ TagManager:
   tags:
   - DeathZone
   - Enemy
+  - MainAudioSource
+  - PlayerHeart
+  - PlayerHitbox
+  - PlayerHurtbox
+  - Ground
+  - Slope
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Level
   - Water
   - UI
-  - 
+  - Test 6
   - 
   - 
   - 
@@ -40,6 +46,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: UI
+    uniqueID: 2832740255
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

@@ -2,19 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraController : MonoBehaviour
+namespace RoShamBot
 {
-    private int speed;
-
-    // Start is called before the first frame update
-    void Start()
+    public class CameraController : MonoBehaviour
     {
-        speed = GameObject.Find("Player").GetComponent<PlayerController>().speed;
-    }
+        public static CameraController Instance;
+        private int speed;
+        public bool moving = true;
 
-    // Update is called once per frame
-    void Update()
-    {
-        transform.Translate(speed * Time.deltaTime * Vector2.right);
+        private void Awake()
+        {
+            if (Instance != null)
+            {
+                Destroy(this.gameObject);
+                return;
+            }
+
+            Instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+
+        // Start is called before the first frame update
+        void Start() => speed = Player.Instance.Speed;
+
+        // Update is called once per frame
+        void Update()
+        {
+            if (moving) transform.Translate(speed * Time.deltaTime * Vector2.right);
+        }
     }
 }
+
