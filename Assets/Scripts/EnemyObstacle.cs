@@ -18,15 +18,19 @@ namespace RoShamBot
         public int initialHealth = 1;
         [HideInInspector]
         public int currentHealth;
-        protected bool defeated;
+        public bool defeated;
+        public bool isStationary = true;
+        private float lastFrameRotation = 0;
+        private Vector3 lastFramePosition;
 
         protected virtual void Start()
         {
+            lastFramePosition = this.gameObject.transform.position;
+            isStationary = true;
             currentHealth = initialHealth;
             if (fixedShoot != RPS.Shoot.none) SetAttack(fixedShoot);
-            else if (includeShoots.Count != 0) SetAttack(includeShoots);
+            else if (includeShoots.Count > 0) SetAttack(includeShoots);
             else SetAttack();
-            if (displayIntent) DisplayIntent();
         }
 
         protected virtual void Update() 
@@ -36,26 +40,29 @@ namespace RoShamBot
                 defeated = true;
                 Defeated();
             }
+
+            if (isStationary && this.gameObject.GetComponent<Rigidbody2D>().velocity.magnitude > 0.01f) isStationary = false;
+            else if (!isStationary && this.gameObject.GetComponent<Rigidbody2D>().velocity.magnitude <= 0.01f) isStationary = true;
+            lastFrameRotation = this.gameObject.transform.rotation.z;
+            lastFramePosition = this.gameObject.transform.position;
         } 
 
         /// <summary>
         /// Sets the enemy's attack to a random RPS.Shoot.
         /// </summary>
-        protected void SetAttack()
+        public void SetAttack()
         {
             if (fixedShoot != RPS.Shoot.none) 
             {
                 SetAttack(fixedShoot);
                 return;
             }
-            
-            enemyAttack = Random.Range(1, 4) switch
+            if (includeShoots.Count > 0)
             {
-                1 => RPS.Shoot.rock,
-                2 => RPS.Shoot.paper,
-                3 => RPS.Shoot.scissors,
-                _ => RPS.Shoot.none
-            };
+                SetAttack(includeShoots);
+                return;
+            }
+            else enemyAttack = (RPS.Shoot)Random.Range(1, 4);
         }
 
         /// <summary>
@@ -70,22 +77,14 @@ namespace RoShamBot
         /// <param name="includeShoots">Collection of RPS.Shoot options the enemy can pick from.</param>
         protected void SetAttack(List<RPS.Shoot> includeShoots)
         {
-            do
-            {
-                enemyAttack = Random.Range(1, 4) switch
-                {
-                    1 => RPS.Shoot.rock,
-                    2 => RPS.Shoot.paper,
-                    3 => RPS.Shoot.scissors,
-                    _ => RPS.Shoot.none
-                };
-            } while (!includeShoots.Contains(enemyAttack));
+            do enemyAttack = (RPS.Shoot)Random.Range(1, 4);
+            while (!includeShoots.Contains(enemyAttack));
         }
 
         /// <summary>
         /// Displays the enemy's attack in a bubble.
         /// </summary>
-        protected void DisplayIntent()
+        public void DisplayIntent()
         {
             // Child gameObjects are intent bubble sprites, so remove them before instantiating a new bubble.
             if (transform.childCount > 0) RemoveIntentBubble();
@@ -123,9 +122,9 @@ namespace RoShamBot
         /// Destroys all child objects of the EnemyObstacle. Intended to remove attack bubble and hand sprites.
         /// </summary>
         /// <param name="offset">(Optional) Number of children to skip over.</param>
-        protected void RemoveIntentBubble(int offset = 0)
+        public void RemoveIntentBubble(int offset = 0)
         {
-            for (int i = 1 + offset; i < transform.childCount; i++) Destroy(transform.GetChild(i).gameObject);
+            for (int i = 0 + offset; i < transform.childCount; i++) Destroy(transform.GetChild(i).gameObject);
         }
 
         public abstract void ClearObstacle();
@@ -143,6 +142,17 @@ namespace RoShamBot
                 else SetAttack();
                 if (displayIntent) DisplayIntent();
             }
+            if (!isStationary && collision.gameObject.CompareTag("Ground")) isStationary = true;
+        }
+
+        protected void OnCollisionStay2D(Collision2D collision)
+        {
+            if (!isStationary && collision.gameObject.CompareTag("Ground")) isStationary = true;
+        }
+
+        protected void OnCollisionExit2D(Collision2D collision)
+        {
+            if (isStationary && collision.gameObject.CompareTag("Ground")) isStationary = false;
         }
 
         public abstract void Defeated();

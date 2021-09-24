@@ -11,26 +11,30 @@ namespace RoShamBot
         // Instance
         public static Player Instance;
 
-        // Health
+        [Header("Health")]
         [SerializeField] private int initialHealth = 3;
         [SerializeField] private int currentHealth;
 
-        // Movement
+        [Header("Movement")]
+        [SerializeField] private float initialSpeed = 5f;
+        private float speed;
+        public bool isMoving = true;
+        public bool isCatchingUp = false;
         private Vector2 movementDirection;
-        [SerializeField] private int speed = 5;
 
-        // Attacks
-        private RPS.Shoot currentAttackType = RPS.Shoot.none;
+        [Header("Attacks")]
         [SerializeField] private GameObject playerHitbox;
-        [SerializeField] private GameObject playerSprite;
+        [SerializeField] public GameObject playerSprite;
         [SerializeField] private float attackActiveTime = 1;
         [SerializeField] private Vector2 bubbleOffset;
+        [HideInInspector] public RPS.Shoot currentAttackType = RPS.Shoot.none;
+        public BattleMode battleMode;
 
-        // Inputs
-        private KeyCode[] attackInputs;
+        [Header("Inputs")]
         [SerializeField] private KeyCode rockInput = KeyCode.Q;
         [SerializeField] private KeyCode paperInput = KeyCode.W;
         [SerializeField] private KeyCode scissorsInput = KeyCode.E;
+        private KeyCode[] attackInputs;
 
         #endregion
 
@@ -51,10 +55,13 @@ namespace RoShamBot
         // Start is called before the first frame update
         void Start()
         {
+            playerSprite = this.gameObject;
+            battleMode.active = false;
             movementDirection = Vector2.right;
-            playerSprite = GameObject.Find("Sprite");
+            isMoving = true;
             attackInputs = new KeyCode[] { rockInput, paperInput, scissorsInput };
             currentHealth = initialHealth;
+            speed = initialSpeed;
         }
 
         // Update is called once per frame
@@ -62,23 +69,29 @@ namespace RoShamBot
         {
             if (currentHealth > 0)
             {
-                // Move the player
-                transform.Translate(speed * Time.deltaTime * movementDirection);
-                
-                // Check for one of the three inputs
-                foreach (KeyCode key in attackInputs)
+                if (!battleMode.active)
                 {
-                    // If not already attacking, set attack state to match the input and instantiate bubble
-                    if (Input.GetKeyDown(key) && currentAttackType == RPS.Shoot.none)
+                    // Move the player
+                    playerSprite.transform.Translate(speed * Time.deltaTime * movementDirection);
+
+                    // Check for one of the three inputs
+                    HandleInput();
+
+                    if (!isCatchingUp && isMoving && CameraController.Instance.isMoving && this.transform.position.x + 1 < CameraController.Instance.gameObject.transform.position.x)
                     {
-                        //GameObject bubble = Instantiate(rps.bubble, new Vector2(transform.position.x, transform.position.y + 2.75f), rps.transform.rotation);
-                        GameObject bubble = Instantiate(RPS.Instance.bubble, new Vector2(playerSprite.transform.position.x + bubbleOffset.x, playerSprite.transform.position.y + bubbleOffset.y), RPS.Instance.bubble.transform.rotation);
-                        bubble.transform.parent = transform;
-                        GameObject hitbox = Instantiate(playerHitbox, playerSprite.transform);
-                        hitbox.transform.parent = transform;
-                        SetAttackType(key);
-                        StartCoroutine(ResetAttackTypeDelayed());
+                        isCatchingUp = true;
+                        StartCoroutine(CatchUpToCamera());
                     }
+
+                    if (isCatchingUp && isMoving && CameraController.Instance.isMoving && this.transform.position.x + 1 >= CameraController.Instance.gameObject.transform.position.x)
+                    {
+                        isCatchingUp = false;
+                        speed = initialSpeed;
+                    }
+                }
+                else
+                {
+                    isMoving = isCatchingUp = false;
                 }
             }
             else HandleDeath();
@@ -104,7 +117,11 @@ namespace RoShamBot
         /// <param name="value">Positive or negative value.</param>
         public void ChangeHealthBy(int value) => this.currentHealth += value;
 
-        public int Speed => this.speed;
+        public float InitialSpeed => this.initialSpeed;
+
+        public float Speed => this.speed;
+
+        public void SetSpeed(float value) => this.speed = value;
 
         public RPS.Shoot Attack => this.currentAttackType;
 
@@ -118,8 +135,48 @@ namespace RoShamBot
         private void HandleDeath()
         {
             ResetAttackType();
-            CameraController.Instance.moving = false;
+            CameraController.Instance.isMoving = false;
             Destroy(this.gameObject);
+        }
+
+        public void HandleInput()
+        {
+            foreach (KeyCode key in attackInputs)
+            {
+                // If not already attacking, set attack state to match the input and instantiate bubble
+                if (Input.GetKeyDown(key) && currentAttackType == RPS.Shoot.none) 
+                {
+                    GameObject bubble = Instantiate(RPS.Instance.bubble, new Vector2(playerSprite.transform.position.x + bubbleOffset.x, playerSprite.transform.position.y + bubbleOffset.y), RPS.Instance.bubble.transform.rotation);
+                    bubble.transform.parent = transform;
+                    GameObject hitbox = Instantiate(playerHitbox, playerSprite.transform);
+                    hitbox.transform.parent = transform;
+                    SetAttackType(key);
+                    StartCoroutine(ResetAttackTypeDelayed());
+                }
+            }
+        }
+
+        public void EnterBattleMode(EnemyObstacle enemy)
+        {
+            isMoving = false;
+            isCatchingUp = false;
+            battleMode.enemy = enemy;
+            battleMode.active = true;
+            Instantiate(battleMode.gameObject);
+        }
+
+        public void ExitBattleMode(GameObject battleModeObj)
+        {
+            battleMode.active = false;
+            Destroy(battleModeObj);
+            isMoving = true;
+        }
+
+        public IEnumerator Knockback()
+        {
+            isMoving = false;
+            yield return new WaitForSeconds(0.1f);
+            isMoving = true;
         }
 
         /// <summary>
@@ -167,14 +224,14 @@ namespace RoShamBot
 
             // Reset attack type and destroy bubble and hand sprites.
             currentAttackType = RPS.Shoot.none;
-            for (int i = 1 + offset; i < transform.childCount; i++) Destroy(transform.GetChild(i).gameObject);
+            for (int i = 0 + offset; i < transform.childCount; i++) Destroy(transform.GetChild(i).gameObject);
         }
 
         /// <summary>
         /// Resets the attack type to none and destroys associated bubble/hand sprites after a delay.
         /// </summary>
         /// <returns>IEnumerator WaitForSeconds (Player.attackActiveTime).</returns>
-        public IEnumerator ResetAttackTypeDelayed()
+        public IEnumerator ResetAttackTypeDelayed(int offset = 0)
         {
             yield return new WaitForSeconds(attackActiveTime);
 
@@ -183,7 +240,15 @@ namespace RoShamBot
 
             // Reset attack type and destroy bubble and hand sprites.
             currentAttackType = RPS.Shoot.none;
-            for (int i = 1; i < transform.childCount; i++) Destroy(transform.GetChild(i).gameObject);
+            for (int i = 0 + offset; i < transform.childCount; i++) Destroy(transform.GetChild(i).gameObject);
+        }
+
+        public IEnumerator CatchUpToCamera()
+        {
+            yield return new WaitForSeconds(3f);
+            if (!isCatchingUp) yield break;
+            Debug.Log("Catching up...");
+            this.speed += .5f;
         }
 
         #endregion

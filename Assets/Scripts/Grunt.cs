@@ -8,6 +8,15 @@ namespace RoShamBot
     {
         [SerializeField] private AudioClip deathScream;
 
+        protected override void Update()
+        {
+            base.Update();
+            if (!Player.Instance.battleMode.active && Vector2.Distance(this.transform.position, Player.Instance.gameObject.transform.position) <= 4f)
+            {
+                Player.Instance.EnterBattleMode(this);
+            }
+        }
+
         protected override void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.gameObject.CompareTag("PlayerHitbox") && Player.Instance.Attack != RPS.Shoot.none)
@@ -38,7 +47,11 @@ namespace RoShamBot
             }
         }
 
-        public override void Defeated() => StartCoroutine(ScreamAndDie());
+        public override void Defeated() 
+        {
+            defeated = true;
+            StartCoroutine(ScreamAndDie());
+        }
 
         private IEnumerator ScreamAndDie()
         {

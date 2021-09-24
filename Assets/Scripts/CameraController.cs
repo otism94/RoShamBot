@@ -7,8 +7,8 @@ namespace RoShamBot
     public class CameraController : MonoBehaviour
     {
         public static CameraController Instance;
-        private int speed;
-        public bool moving = true;
+        private float speed;
+        public bool isMoving = true;
 
         private void Awake()
         {
@@ -23,12 +23,19 @@ namespace RoShamBot
         }
 
         // Start is called before the first frame update
-        void Start() => speed = Player.Instance.Speed;
+        void Start() 
+        {
+            speed = Player.Instance.InitialSpeed;
+            if (Player.Instance.isMoving)
+            {
+                isMoving = true;
+            }
+        }
 
         // Update is called once per frame
         void Update()
         {
-            if (moving) transform.Translate(speed * Time.deltaTime * Vector2.right);
+            if (isMoving && Player.Instance.isMoving) transform.Translate(speed * Time.deltaTime * Vector2.right);
         }
     }
 }
