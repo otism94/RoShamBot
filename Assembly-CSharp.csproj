@@ -8,7 +8,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>RoShamBot</RootNamespace>
     <ProjectGuid>{FB9926B8-C51D-935F-BFE2-FCEB900DFCDE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -58,6 +58,7 @@
     <Compile Include="Assets\Scripts\HealthDisplay.cs" />
     <Compile Include="Assets\Scripts\PaperBridge.cs" />
     <Compile Include="Assets\Scripts\Grunt.cs" />
+    <Compile Include="Assets\Scripts\BattleMode.cs" />
     <Compile Include="Assets\Scripts\ScissorWall.cs" />
     <Compile Include="Assets\Platformer Tileset\Materials\GradientSky\Scripts\Common\GradientSkyCommon.cs" />
     <Compile Include="Assets\Scripts\CreateBridgeOnDefeat.cs" />
@@ -69,7 +70,8 @@
     <Compile Include="Assets\Scripts\EnemyObstacle.cs" />
     <Compile Include="Assets\Scripts\Audio.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
-    <Compile Include="Assets\Scripts\BattleMode.cs" />
+    <Compile Include="Assets\Scripts\Enemy.cs" />
+    <Compile Include="Assets\Scripts\Obstacle.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
@@ -758,6 +760,9 @@
     </Reference>
     <Reference Include="Unity.2D.SpriteShape.Runtime">
       <HintPath>Library\ScriptAssemblies\Unity.2D.SpriteShape.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="com.unity.quicksearch">
+      <HintPath>Library\ScriptAssemblies\com.unity.quicksearch.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

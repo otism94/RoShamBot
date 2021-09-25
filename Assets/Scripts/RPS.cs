@@ -80,57 +80,5 @@ namespace RoShamBot
 
             return Outcome.lose;
         }
-
-        public static void WinDefault(GameObject winner)
-        {
-            
-        }
-
-        /// <summary>
-        /// Default outcome on a draw: the drawer gets knocked back slightly with no health loss.
-        /// </summary>
-        /// <param name="drawer">The player or enemy gameObject that drew.</param>
-        public static void DrawDefault(GameObject drawer)
-        {
-            if (drawer.CompareTag("Player")) 
-            {
-                //drawer.transform.Translate(new Vector2(-2, 0));
-                Player.Instance.StartCoroutine(Player.Instance.Knockback());
-                Player.Instance.playerSprite.GetComponent<Rigidbody2D>().AddForce(new Vector2(-2, 0), ForceMode2D.Impulse);
-                if (Player.Instance.isCatchingUp)
-                {
-                    Player.Instance.isCatchingUp = false;
-                    Player.Instance.SetSpeed(Player.Instance.InitialSpeed);
-                }
-            }
-            else if (drawer.CompareTag("Enemy")) drawer.GetComponent<Rigidbody2D>().AddForce(new Vector2(2, 0), ForceMode2D.Impulse); // drawer.transform.Translate(new Vector2(2, 0));
-        }
-
-        /// <summary>
-        /// Default outcome on a loss: the loser loses 1 health and is knocked back greatly.
-        /// </summary>
-        /// <param name="loser">The player or enemy gameObject that lost.</param>
-        public static void LoseDefault(GameObject loser)
-        {
-            if (loser.CompareTag("Player") || loser.CompareTag("PlayerHurtbox"))
-            {
-                // loser.transform.Translate(new Vector2(-3, 0));
-                Player.Instance.StartCoroutine(Player.Instance.Knockback());
-                Player.Instance.playerSprite.GetComponent<Rigidbody2D>().AddForce(new Vector2(-3, 0), ForceMode2D.Impulse);
-                Player.Instance.ChangeHealthBy(-1);
-                HealthDisplay.Instance.UpdateHealthDisplay();
-                if (Player.Instance.isCatchingUp)
-                {
-                    Player.Instance.isCatchingUp = false;
-                    Player.Instance.SetSpeed(Player.Instance.InitialSpeed);
-                }
-            }
-            else if (loser.CompareTag("Enemy")) 
-            {
-                // loser.transform.Translate(new Vector2(3, 0));
-                loser.GetComponent<Rigidbody2D>().AddForce(new Vector2(3, 0), ForceMode2D.Impulse);
-                loser.GetComponent<EnemyObstacle>().currentHealth -= 1;
-            }
-        }
     }
 }

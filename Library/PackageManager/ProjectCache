@@ -5,16 +5,16 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 637665396532758814
-    m_Hash: 3495101853
+      ticks: 637681672443304422
+    m_Hash: 1802660729
   m_LockFileStatus:
     m_FilePath: C:/Users/otism/Unity Projects/Create with Code/RoShamBot/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 637665396532862970
-    m_Hash: 326454003
+      ticks: 637681672443478023
+    m_Hash: 1824134479
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_PackageAssets:
@@ -644,6 +644,8 @@ m_PackageAssets:
         - 1.7.1
         - 1.8.0
         - 1.9.0
+        - 1.10.2
+        - 1.11.2
         - 2.0.0-preview.6
         - 2.0.0-preview.8
         - 2.0.0-preview.15
@@ -658,6 +660,8 @@ m_PackageAssets:
         - 1.7.1
         - 1.8.0
         - 1.9.0
+        - 1.10.2
+        - 1.11.2
         - 2.0.0-preview.6
         - 2.0.0-preview.8
         - 2.0.0-preview.15
@@ -973,6 +977,211 @@ m_PackageAssets:
         type: git
         url: git+https://github.com/Unity-Technologies/com.unity.ide.vscode.git
         revision: 1f4f605d5c988cb610c372b5c5216c46cc8f5d30
+        path: 
+    - packageId: com.unity.quicksearch@2.0.2
+      testable: 0
+      isDirectDependency: 1
+      version: 2.0.2
+      source: 1
+      resolvedPath: C:\Users\otism\Unity Projects\Create with Code\RoShamBot\Library\PackageCache\com.unity.quicksearch@2.0.2
+      assetPath: Packages/com.unity.quicksearch
+      name: com.unity.quicksearch
+      displayName: Quick Search
+      author:
+        name: 
+        email: 
+        url: 
+      category: 
+      type: 
+      description: 'Search multiple areas of Unity: assets, scene objects, menu items,
+        packages, APIs, settings, etc.
+
+
+        On Windows simply press Alt+'' to
+        find anything or Option+'' on Mac.
+
+        Look in the shortcut manager
+        for additional Quick Search shortcut bindings.'
+      status: 4
+      errors: []
+      versions:
+        all:
+        - 0.9.5-preview.1
+        - 0.9.6-preview.1
+        - 0.9.7-preview.3
+        - 0.9.9-preview.2
+        - 0.9.95-preview
+        - 1.0.0-preview.2
+        - 1.0.1-preview.1
+        - 1.0.9-preview.2
+        - 1.1.0-preview.1
+        - 1.2.0-preview.1
+        - 1.2.1-preview
+        - 1.2.2-preview
+        - 1.2.3-preview
+        - 1.2.4-preview
+        - 1.2.6-preview
+        - 1.2.7-preview
+        - 1.2.8-preview
+        - 1.2.9-preview
+        - 1.3.0-preview
+        - 1.3.1-preview
+        - 1.3.2-preview
+        - 1.4.1
+        - 1.4.2-preview.1
+        - 1.4.2-preview.2
+        - 1.4.2-preview.3
+        - 1.5.0-preview.1
+        - 1.5.0-preview.2
+        - 1.5.0-preview.3
+        - 1.5.0-preview.4
+        - 1.5.0-preview.5
+        - 1.5.0-preview.6
+        - 1.5.0
+        - 1.5.1
+        - 1.5.2-preview.1
+        - 1.5.2-preview.2
+        - 1.5.2
+        - 1.5.3
+        - 1.5.4
+        - 1.6.0-preview.1
+        - 1.6.0-preview.2
+        - 1.6.0-preview.3
+        - 1.6.0-preview.4
+        - 1.6.0-preview.5
+        - 1.6.0-preview.6
+        - 1.6.0-preview.7
+        - 1.6.0-preview.8
+        - 1.6.0-preview.9
+        - 2.0.0
+        - 2.0.2
+        - 2.1.0-preview.1
+        - 2.1.0-preview.2
+        - 2.1.0-preview.3
+        - 2.1.0-preview.4
+        - 2.1.0-preview.5
+        - 3.0.0-preview.1
+        - 3.0.0-preview.2
+        - 3.0.0-preview.3
+        - 3.0.0-preview.5
+        - 3.0.0-preview.6
+        - 3.0.0-preview.7
+        - 3.0.0-preview.8
+        - 3.0.0-preview.9
+        - 3.0.0-preview.10
+        - 3.0.0-preview.11
+        - 3.0.0-preview.12
+        - 3.0.0-preview.13
+        - 3.0.0-preview.14
+        - 3.0.0-preview.15
+        - 3.0.0-preview.16
+        - 3.0.0-preview.17
+        compatible:
+        - 0.9.5-preview.1
+        - 0.9.6-preview.1
+        - 0.9.7-preview.3
+        - 0.9.9-preview.2
+        - 0.9.95-preview
+        - 1.0.0-preview.2
+        - 1.0.1-preview.1
+        - 1.0.9-preview.2
+        - 1.1.0-preview.1
+        - 1.2.0-preview.1
+        - 1.2.1-preview
+        - 1.2.2-preview
+        - 1.2.3-preview
+        - 1.2.4-preview
+        - 1.2.6-preview
+        - 1.2.7-preview
+        - 1.2.8-preview
+        - 1.2.9-preview
+        - 1.3.0-preview
+        - 1.3.1-preview
+        - 1.3.2-preview
+        - 1.4.1
+        - 1.4.2-preview.1
+        - 1.4.2-preview.2
+        - 1.4.2-preview.3
+        - 1.5.0-preview.1
+        - 1.5.0-preview.2
+        - 1.5.0-preview.3
+        - 1.5.0-preview.4
+        - 1.5.0-preview.5
+        - 1.5.0-preview.6
+        - 1.5.0
+        - 1.5.1
+        - 1.5.2-preview.1
+        - 1.5.2-preview.2
+        - 1.5.2
+        - 1.5.3
+        - 1.5.4
+        - 1.6.0-preview.1
+        - 1.6.0-preview.2
+        - 1.6.0-preview.3
+        - 1.6.0-preview.4
+        - 1.6.0-preview.5
+        - 1.6.0-preview.6
+        - 1.6.0-preview.7
+        - 1.6.0-preview.8
+        - 1.6.0-preview.9
+        - 2.0.0
+        - 2.0.2
+        - 2.1.0-preview.1
+        - 2.1.0-preview.2
+        - 2.1.0-preview.3
+        - 2.1.0-preview.4
+        - 2.1.0-preview.5
+        - 3.0.0-preview.1
+        - 3.0.0-preview.2
+        - 3.0.0-preview.3
+        - 3.0.0-preview.5
+        - 3.0.0-preview.6
+        - 3.0.0-preview.7
+        - 3.0.0-preview.8
+        - 3.0.0-preview.9
+        - 3.0.0-preview.10
+        - 3.0.0-preview.11
+        - 3.0.0-preview.12
+        - 3.0.0-preview.13
+        - 3.0.0-preview.14
+        - 3.0.0-preview.15
+        - 3.0.0-preview.16
+        - 3.0.0-preview.17
+        verified: 2.0.2
+      dependencies: []
+      resolvedDependencies: []
+      keywords:
+      - unity
+      - editor
+      - omni
+      - tool
+      - quick
+      - search
+      - assets
+      - menu
+      - scene
+      - api
+      - packages
+      - anything
+      registry:
+        id: main
+        name: 
+        url: https://packages.unity.com
+        scopes: []
+        isDefault: 1
+        capabilities: 7
+      hasRegistry: 1
+      hideInEditor: 1
+      entitlements:
+        isAllowed: 1
+      isAssetStorePackage: 0
+      datePublishedTicks: 637293829350000000
+      documentationUrl: 
+      hasRepository: 1
+      repository:
+        type: git
+        url: https://github.cds.internal.unity3d.com/unity/com.unity.quicksearch.git
+        revision: 4d5c0f54be26662a75c6c9d71d0f5354d4379fe8
         path: 
     - packageId: com.unity.test-framework@1.1.27
       testable: 0

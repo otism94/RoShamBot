@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace RoShamBot
 {
-    public class PaperBridge : EnemyObstacle
+    public class PaperBridge : MonoBehaviour
     {
         [SerializeField] private GameObject closedBridge;
         [SerializeField] private GameObject openBridge;
         [SerializeField] private GameObject attachedEnemy;
 
-        public override void ClearObstacle()
+        public void OpenBridge()
         {
             if (attachedEnemy != null && attachedEnemy.activeInHierarchy) return;
             else
@@ -20,11 +20,5 @@ namespace RoShamBot
                 openBridge.GetComponent<BoxCollider2D>().enabled = true;
             }
         }
-
-        public override void Defeated() { return; }
-
-        protected override void OnTriggerEnter2D(Collider2D collision) { return; }
-
-        protected override void OnCollisionEnter2D(Collision2D collision) { return; }
     }
 }

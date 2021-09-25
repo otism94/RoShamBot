@@ -23,12 +23,15 @@ namespace RoShamBot
         private Vector2 movementDirection;
 
         [Header("Attacks")]
-        [SerializeField] private GameObject playerHitbox;
-        [SerializeField] public GameObject playerSprite;
+        [SerializeField] private GameObject hitbox;
+        private Rigidbody2D RB;
         [SerializeField] private float attackActiveTime = 1;
         [SerializeField] private Vector2 bubbleOffset;
         [HideInInspector] public RPS.Shoot currentAttackType = RPS.Shoot.none;
         public BattleMode battleMode;
+        [SerializeField] private float drawKnockback = -2f;
+        [SerializeField] private float loseKnockback = -3f;
+
 
         [Header("Inputs")]
         [SerializeField] private KeyCode rockInput = KeyCode.Q;
@@ -55,7 +58,7 @@ namespace RoShamBot
         // Start is called before the first frame update
         void Start()
         {
-            playerSprite = this.gameObject;
+            RB = this.gameObject.GetComponent<Rigidbody2D>();
             battleMode.active = false;
             movementDirection = Vector2.right;
             isMoving = true;
@@ -72,7 +75,7 @@ namespace RoShamBot
                 if (!battleMode.active)
                 {
                     // Move the player
-                    playerSprite.transform.Translate(speed * Time.deltaTime * movementDirection);
+                    this.gameObject.transform.Translate(speed * Time.deltaTime * movementDirection);
 
                     // Check for one of the three inputs
                     HandleInput();
@@ -94,7 +97,7 @@ namespace RoShamBot
                     isMoving = isCatchingUp = false;
                 }
             }
-            else HandleDeath();
+            else Defeat();
         }
 
         #endregion
@@ -132,11 +135,13 @@ namespace RoShamBot
         /// <summary>
         /// Resets attack type, stops the camera, and destroys the player gameObject.
         /// </summary>
-        private void HandleDeath()
+        private void Defeat()
         {
+            StopAllCoroutines();
             ResetAttackType();
             CameraController.Instance.isMoving = false;
-            Destroy(this.gameObject);
+            isMoving = isCatchingUp = false;
+            this.gameObject.GetComponent<SpriteRenderer>().color = Color.clear;
         }
 
         public void HandleInput()
@@ -146,36 +151,40 @@ namespace RoShamBot
                 // If not already attacking, set attack state to match the input and instantiate bubble
                 if (Input.GetKeyDown(key) && currentAttackType == RPS.Shoot.none) 
                 {
-                    GameObject bubble = Instantiate(RPS.Instance.bubble, new Vector2(playerSprite.transform.position.x + bubbleOffset.x, playerSprite.transform.position.y + bubbleOffset.y), RPS.Instance.bubble.transform.rotation);
-                    bubble.transform.parent = transform;
-                    GameObject hitbox = Instantiate(playerHitbox, playerSprite.transform);
-                    hitbox.transform.parent = transform;
+                    GameObject bubble = Instantiate(
+                        RPS.Instance.bubble, 
+                        new Vector2(transform.position.x + bubbleOffset.x, transform.position.y + bubbleOffset.y),
+                        RPS.Instance.bubble.transform.rotation,
+                        transform);
+                    bubble.transform.localScale = new Vector3(.9f, .9f, .9f);
+                    Instantiate(hitbox, transform);
                     SetAttackType(key);
                     StartCoroutine(ResetAttackTypeDelayed());
                 }
             }
         }
 
-        public void EnterBattleMode(EnemyObstacle enemy)
+        public void EnterBattleMode(Enemy enemy)
         {
             isMoving = false;
             isCatchingUp = false;
             battleMode.enemy = enemy;
             battleMode.active = true;
-            Instantiate(battleMode.gameObject);
+            GameObject battleModeInstance = Instantiate(battleMode.gameObject);
+            battleModeInstance.transform.position = CameraController.Instance.transform.position;
         }
 
-        public void ExitBattleMode(GameObject battleModeObj)
+        public void ExitBattleMode(GameObject battleModeInstance)
         {
             battleMode.active = false;
-            Destroy(battleModeObj);
+            Destroy(battleModeInstance);
             isMoving = true;
         }
 
-        public IEnumerator Knockback()
+        private IEnumerator RunningKnockback()
         {
             isMoving = false;
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.3f);
             isMoving = true;
         }
 
@@ -208,7 +217,7 @@ namespace RoShamBot
             // Instantiate the hand sprite and set it as a child of the player object.
             handSprite = Instantiate(
                 handSprite, 
-                new Vector2(playerSprite.transform.position.x + bubbleOffset.x, playerSprite.transform.position.y + bubbleOffset.y), 
+                new Vector2(transform.position.x + bubbleOffset.x, transform.position.y + bubbleOffset.y), 
                 RPS.Instance.bubble.transform.rotation);
             handSprite.transform.SetParent(transform);
         }
@@ -241,6 +250,22 @@ namespace RoShamBot
             // Reset attack type and destroy bubble and hand sprites.
             currentAttackType = RPS.Shoot.none;
             for (int i = 0 + offset; i < transform.childCount; i++) Destroy(transform.GetChild(i).gameObject);
+        }
+
+        public void Win() { return; }
+
+        public void Draw() 
+        {
+            StartCoroutine(RunningKnockback());
+            RB.AddForce(new Vector2(drawKnockback, 0), ForceMode2D.Impulse);
+        }
+
+        public void Lose()
+        {
+            currentHealth -= 1;
+            HealthDisplay.Instance.UpdateHealthDisplay();
+            StartCoroutine(RunningKnockback());
+            RB.AddForce(new Vector2(loseKnockback, 0), ForceMode2D.Impulse);
         }
 
         public IEnumerator CatchUpToCamera()

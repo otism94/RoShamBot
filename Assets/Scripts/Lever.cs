@@ -4,15 +4,16 @@ using UnityEngine;
 
 namespace RoShamBot
 {
-    public class Lever : EnemyObstacle
+    public class Lever : Obstacle
     {
         public bool flipped = false;
         [SerializeField] private GameObject unflippedLever;
         [SerializeField] private GameObject flippedLever;
-        [SerializeField] private EnemyObstacle obstacle;
+        [SerializeField] private PaperBridge bridge;
 
         protected override void Update()
         {
+            base.Update();
             if (flipped && unflippedLever.activeInHierarchy) ClearObstacle();
         }
 
@@ -24,16 +25,17 @@ namespace RoShamBot
                 if (RPS.GetOutcome(Player.Instance.Attack, enemyAttack) == RPS.Outcome.lose) ClearObstacle();
             }
         }
-        public override void Defeated() { return; }
 
         public override void ClearObstacle()
         {
             flipped = true;
             unflippedLever.SetActive(false);
             flippedLever.SetActive(true);
-            obstacle.ClearObstacle();
+            bridge.OpenBridge();
         }
 
         protected override void OnCollisionEnter2D(Collision2D collision) { return; }
+        public override void Win() { return; }
+        public override void Draw() { return; }
     }
 }

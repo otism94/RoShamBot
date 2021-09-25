@@ -10,7 +10,7 @@ namespace RoShamBot
         public static BattleMode Instance;
 
         public bool active;
-        public EnemyObstacle enemy;
+        public Enemy enemy;
         [SerializeField] private TextMeshProUGUI countdown;
         [SerializeField] private AudioClip countdownClip;
         [SerializeField] private GameObject resultDisplay;
@@ -35,7 +35,7 @@ namespace RoShamBot
         // Update is called once per frame
         void Update()
         {
-            if (enemy != null && !enemy.defeated && !roundStarted && enemy.isStationary) StartCoroutine(RoundStart());
+            if (enemy != null && !enemy.Defeated && !roundStarted && enemy.Stationary) StartCoroutine(RoundStart());
 
             if (playerCanInput) Player.Instance.HandleInput();
 
@@ -63,8 +63,7 @@ namespace RoShamBot
             DetermineWinner();
             yield return new WaitForSeconds(1);
 
-
-            if (Player.Instance.Health > 0 && enemy.currentHealth > 0) roundStarted = false;
+            if (Player.Instance.Health > 0 && enemy.Health > 0) roundStarted = false;
             else EndBattleMode();
         }
 
@@ -79,50 +78,58 @@ namespace RoShamBot
 
         private void DetermineWinner()
         {
-            SpriteRenderer resultSprite = resultDisplay.GetComponent<SpriteRenderer>();
+            
 
             if (Player.Instance.currentAttackType != RPS.Shoot.none)
             {
-                RPS.Outcome outcome = RPS.GetOutcome(Player.Instance.Attack, enemy.enemyAttack);
+                RPS.Outcome outcome = RPS.GetOutcome(Player.Instance.Attack, enemy.Attack);
                 
                 if (outcome == RPS.Outcome.lose)
                 {
                     Debug.Log("Player wins");
-                    resultSprite.sprite = winSprite;
-                    GameObject resultObj = Instantiate(resultDisplay);
-                    resultDisplay.transform.position = Player.Instance.gameObject.transform.position;
-                    Destroy(resultObj, 1f);
-                    RPS.WinDefault(Player.Instance.playerSprite);
-                    RPS.LoseDefault(enemy.gameObject);
+                    DisplayResult(winSprite);
+
+                    Player.Instance.Win();
+                    Player.Instance.ResetAttackType();
+                    enemy.Lose();
                     enemy.RemoveIntentBubble();
                     enemy.SetAttack();
-                    Player.Instance.ResetAttackType();
+                    
+
                     return;
                 }
                 else if (outcome == RPS.Outcome.draw)
                 {
                     Debug.Log("Draw");
-                    resultSprite.sprite = drawSprite;
-                    GameObject resultObj = Instantiate(resultDisplay);
-                    resultDisplay.transform.position = Player.Instance.gameObject.transform.position;
-                    Destroy(resultObj, 1f);
-                    RPS.DrawDefault(enemy.gameObject);
-                    RPS.DrawDefault(Player.Instance.playerSprite);
+                    DisplayResult(drawSprite);
+
+                    Player.Instance.Draw();
+                    Player.Instance.ResetAttackType();
+                    enemy.Draw();
                     enemy.RemoveIntentBubble();
                     enemy.SetAttack();
-                    Player.Instance.ResetAttackType();
+                    
                     return;
                 }
             }
+
             Debug.Log("Player loses");
-            resultSprite.sprite = loseSprite;
-            GameObject resultObject = Instantiate(resultDisplay);
-            resultDisplay.transform.position = Player.Instance.gameObject.transform.position;
-            Destroy(resultObject, 1f);
-            RPS.LoseDefault(Player.Instance.playerSprite);
+            DisplayResult(loseSprite);
+
+            Player.Instance.Lose();
+            Player.Instance.ResetAttackType();
+            enemy.Win();
             enemy.RemoveIntentBubble();
             enemy.SetAttack();
-            Player.Instance.ResetAttackType();
+        }
+
+        private void DisplayResult (Sprite result)
+        {
+            SpriteRenderer resultSprite = resultDisplay.GetComponent<SpriteRenderer>();
+            resultSprite.sprite = result;
+            GameObject resultInstance = Instantiate(resultDisplay, transform);
+            resultInstance.transform.position = new Vector3(transform.position.x, transform.position.y, 5);
+            Destroy(resultInstance, 1f);
         }
     }
 }

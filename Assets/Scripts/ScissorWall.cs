@@ -3,34 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using RoShamBot;
 
-public class ScissorWall : EnemyObstacle
+public class ScissorWall : Obstacle
 {
-    protected override void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("PlayerHitbox") && Player.Instance.Attack != RPS.Shoot.none)
-        {
-            switch (RPS.GetOutcome(Player.Instance.Attack, enemyAttack))
-            {
-                case RPS.Outcome.lose:
-                    Debug.Log("Player wins");
-                    RPS.WinDefault(Player.Instance.gameObject);
-                    ClearObstacle();
-                    break;
-                case RPS.Outcome.draw:
-                    Debug.Log("Draw");
-                    RPS.DrawDefault(Player.Instance.gameObject);
-                    Player.Instance.ResetAttackType();
-                    break;
-                case RPS.Outcome.win:
-                    Debug.Log("Player loses");
-                    RPS.LoseDefault(Player.Instance.gameObject);
-                    Player.Instance.ResetAttackType();
-                    break;
-            }
-        }
-    }
-
-    public override void ClearObstacle() => Defeated();
-
-    public override void Defeated() => Destroy(this.gameObject);
+    public override void ClearObstacle() => Destroy(this.gameObject);
+    public override void Win() { return; }
+    public override void Draw() { return; }
 }

@@ -11,7 +11,7 @@ namespace RoShamBot
 
         public override void Event()
         {
-            if (lever.flipped) bridge.ClearObstacle();
+            if (lever.flipped) bridge.OpenBridge();
         }
     }
 }
