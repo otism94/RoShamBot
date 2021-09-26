@@ -144,10 +144,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5766ab9ccea6e14408f21dc36de3effb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyAttack: 0
-  bubbleOffset: {x: 0, y: 0}
+  initialHealth: 1
   fixedShoot: 3
   includeShoots: 
-  displayIntent: 0
-  initialHealth: 1
-  currentHealth: 0
+  overridePlayerDrawKnockback: -3
+  overridePlayerLoseKnockback: -4

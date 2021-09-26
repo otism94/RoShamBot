@@ -90,12 +90,8 @@ namespace RoShamBot
                     DisplayResult(winSprite);
 
                     Player.Instance.Win();
-                    Player.Instance.ResetAttackType();
                     enemy.Lose();
-                    enemy.RemoveIntentBubble();
-                    enemy.SetAttack();
                     
-
                     return;
                 }
                 else if (outcome == RPS.Outcome.draw)
@@ -104,10 +100,7 @@ namespace RoShamBot
                     DisplayResult(drawSprite);
 
                     Player.Instance.Draw();
-                    Player.Instance.ResetAttackType();
                     enemy.Draw();
-                    enemy.RemoveIntentBubble();
-                    enemy.SetAttack();
                     
                     return;
                 }
@@ -117,10 +110,7 @@ namespace RoShamBot
             DisplayResult(loseSprite);
 
             Player.Instance.Lose();
-            Player.Instance.ResetAttackType();
             enemy.Win();
-            enemy.RemoveIntentBubble();
-            enemy.SetAttack();
         }
 
         private void DisplayResult (Sprite result)

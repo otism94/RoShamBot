@@ -86,14 +86,26 @@ namespace RoShamBot
             for (int i = 0 + offset; i < transform.childCount; i++) Destroy(transform.GetChild(i).gameObject);
         }
 
-        public override void Win() { return; }
+        public override void Win() 
+        {
+            RemoveIntentBubble();
+            SetAttack();
+        }
 
-        public override void Draw() => RB.AddForce(new Vector2(drawKnockback, 0), ForceMode2D.Impulse);
+        public override void Draw() 
+        { 
+            RB.AddForce(new Vector2(drawKnockback, 0), ForceMode2D.Impulse);
+            RemoveIntentBubble();
+            SetAttack();
+        
+        }
 
         public override void Lose() 
-        { 
-            RB.AddForce(new Vector2(loseKnockback, 0), ForceMode2D.Impulse);
+        {
             currentHealth -= 1;
+            RB.AddForce(new Vector2(loseKnockback, 0), ForceMode2D.Impulse);
+            RemoveIntentBubble();
+            SetAttack();
         }
     }
 }

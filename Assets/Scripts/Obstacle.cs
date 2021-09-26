@@ -6,6 +6,9 @@ namespace RoShamBot
 {
     public abstract class Obstacle : EnemyObstacle
     {
+        [SerializeField] protected float overridePlayerDrawKnockback = 0;
+        [SerializeField] protected float overridePlayerLoseKnockback = 0;
+
         public abstract void ClearObstacle();
 
         protected virtual void OnTriggerEnter2D(Collider2D collision)
@@ -21,12 +24,12 @@ namespace RoShamBot
                         break;
                     case RPS.Outcome.draw:
                         Debug.Log("Draw");
-                        Player.Instance.Draw();
+                        Player.Instance.Draw(overridePlayerDrawKnockback);
                         this.Draw();
                         break;
                     case RPS.Outcome.win:
                         Debug.Log("Player loses");
-                        Player.Instance.Lose();
+                        Player.Instance.Lose(overridePlayerLoseKnockback);
                         this.Win();
                         break;
                 }
@@ -37,7 +40,7 @@ namespace RoShamBot
         {
             if (collision.gameObject.CompareTag("PlayerHurtbox"))
             {
-                Player.Instance.Lose();
+                Player.Instance.Lose(-5f);
                 if (fixedShoot != RPS.Shoot.none) SetAttack(fixedShoot);
                 else if (includeShoots.Count != 0) SetAttack(includeShoots);
                 else SetAttack();

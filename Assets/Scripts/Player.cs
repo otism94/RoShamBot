@@ -20,6 +20,7 @@ namespace RoShamBot
         private float speed;
         public bool isMoving = true;
         public bool isCatchingUp = false;
+        private Coroutine catchUpCoroutine;
         private Vector2 movementDirection;
 
         [Header("Attacks")]
@@ -38,6 +39,7 @@ namespace RoShamBot
         [SerializeField] private KeyCode paperInput = KeyCode.W;
         [SerializeField] private KeyCode scissorsInput = KeyCode.E;
         private KeyCode[] attackInputs;
+        private Coroutine attackCoroutine;
 
         #endregion
 
@@ -72,7 +74,7 @@ namespace RoShamBot
         {
             if (currentHealth > 0)
             {
-                if (!battleMode.active)
+                if (!battleMode.active && isMoving)
                 {
                     // Move the player
                     this.gameObject.transform.Translate(speed * Time.deltaTime * movementDirection);
@@ -80,13 +82,13 @@ namespace RoShamBot
                     // Check for one of the three inputs
                     HandleInput();
 
-                    if (!isCatchingUp && isMoving && CameraController.Instance.isMoving && this.transform.position.x + 1 < CameraController.Instance.gameObject.transform.position.x)
+                    if (!isCatchingUp && isMoving && CameraController.Instance.isMoving && this.transform.position.x + 1.5f < CameraController.Instance.gameObject.transform.position.x)
                     {
                         isCatchingUp = true;
-                        StartCoroutine(CatchUpToCamera());
+                        catchUpCoroutine = StartCoroutine(CatchUpToCamera());
                     }
 
-                    if (isCatchingUp && isMoving && CameraController.Instance.isMoving && this.transform.position.x + 1 >= CameraController.Instance.gameObject.transform.position.x)
+                    if (isCatchingUp && isMoving && CameraController.Instance.isMoving && this.transform.position.x + 1.5f >= CameraController.Instance.gameObject.transform.position.x)
                     {
                         isCatchingUp = false;
                         speed = initialSpeed;
@@ -94,6 +96,8 @@ namespace RoShamBot
                 }
                 else
                 {
+                    if (catchUpCoroutine != null) StopCoroutine(catchUpCoroutine);
+                    catchUpCoroutine = null;
                     isMoving = isCatchingUp = false;
                 }
             }
@@ -159,7 +163,7 @@ namespace RoShamBot
                     bubble.transform.localScale = new Vector3(.9f, .9f, .9f);
                     Instantiate(hitbox, transform);
                     SetAttackType(key);
-                    StartCoroutine(ResetAttackTypeDelayed());
+                    attackCoroutine = StartCoroutine(ResetAttackTypeDelayed());
                 }
             }
         }
@@ -178,13 +182,6 @@ namespace RoShamBot
         {
             battleMode.active = false;
             Destroy(battleModeInstance);
-            isMoving = true;
-        }
-
-        private IEnumerator RunningKnockback()
-        {
-            isMoving = false;
-            yield return new WaitForSeconds(0.3f);
             isMoving = true;
         }
 
@@ -226,21 +223,21 @@ namespace RoShamBot
         /// Resets the attack type to none and destroys associated bubble/hand sprites.
         /// </summary>
         /// <param name="offset">(Optional) Number of children to skip over.</param>
-        public void ResetAttackType(int offset = 0)
+        public void ResetAttackType()
         {
             // Confirm that attack type hasn't already been reset by an interaction.
             if (currentAttackType == RPS.Shoot.none) return;
 
             // Reset attack type and destroy bubble and hand sprites.
             currentAttackType = RPS.Shoot.none;
-            for (int i = 0 + offset; i < transform.childCount; i++) Destroy(transform.GetChild(i).gameObject);
+            for (int i = 0; i < transform.childCount; i++) Destroy(transform.GetChild(i).gameObject);
         }
 
         /// <summary>
-        /// Resets the attack type to none and destroys associated bubble/hand sprites after a delay.
+        /// Resets the attack type to none and destroys associated bubble/hand sprites after a set delay.
         /// </summary>
         /// <returns>IEnumerator WaitForSeconds (Player.attackActiveTime).</returns>
-        public IEnumerator ResetAttackTypeDelayed(int offset = 0)
+        public IEnumerator ResetAttackTypeDelayed()
         {
             yield return new WaitForSeconds(attackActiveTime);
 
@@ -249,15 +246,53 @@ namespace RoShamBot
 
             // Reset attack type and destroy bubble and hand sprites.
             currentAttackType = RPS.Shoot.none;
-            for (int i = 0 + offset; i < transform.childCount; i++) Destroy(transform.GetChild(i).gameObject);
+            for (int i = 0; i < transform.childCount; i++) Destroy(transform.GetChild(i).gameObject);
         }
 
-        public void Win() { return; }
+        /// <summary>
+        /// Resets the attack type to none and destroys associated bubble/hand sprites after a provided delay.
+        /// </summary>
+        /// <param name="wait">Time to wait for in seconds.</param>
+        /// <returns>IEnumerator WaitForSeconds (Player.attackActiveTime).</returns>
+        public IEnumerator ResetAttackTypeDelayed(float wait)
+        {
+            if (attackCoroutine != null) StopCoroutine(attackCoroutine);
+            yield return new WaitForSeconds(wait);
 
-        public void Draw() 
+            // Confirm that attack type hasn't already been reset by an interaction.
+            if (currentAttackType == RPS.Shoot.none) yield break;
+
+            // Reset attack type and destroy bubble and hand sprites.
+            currentAttackType = RPS.Shoot.none;
+            for (int i = 0; i < transform.childCount; i++) Destroy(transform.GetChild(i).gameObject);
+        }
+
+        private IEnumerator RunningKnockback()
+        {
+            if (catchUpCoroutine != null)
+            {
+                StopCoroutine(catchUpCoroutine);
+                catchUpCoroutine = null;
+            }
+            isMoving = isCatchingUp = false;
+            yield return new WaitForSeconds(1f);
+            if (!battleMode.active) isMoving = true;
+        }
+
+        public void Win() => StartCoroutine(ResetAttackTypeDelayed(.5f));
+
+        public void Draw()
         {
             StartCoroutine(RunningKnockback());
             RB.AddForce(new Vector2(drawKnockback, 0), ForceMode2D.Impulse);
+            StartCoroutine(ResetAttackTypeDelayed(.5f));
+        }
+
+        public void Draw(float overrideKnockback = 0) 
+        {
+            StartCoroutine(RunningKnockback());
+            RB.AddForce(new Vector2(overrideKnockback, 0), ForceMode2D.Impulse);
+            StartCoroutine(ResetAttackTypeDelayed(.5f));
         }
 
         public void Lose()
@@ -266,6 +301,16 @@ namespace RoShamBot
             HealthDisplay.Instance.UpdateHealthDisplay();
             StartCoroutine(RunningKnockback());
             RB.AddForce(new Vector2(loseKnockback, 0), ForceMode2D.Impulse);
+            StartCoroutine(ResetAttackTypeDelayed(.5f));
+        }
+
+        public void Lose(float overrideKnockback = 0)
+        {
+            currentHealth -= 1;
+            HealthDisplay.Instance.UpdateHealthDisplay();
+            StartCoroutine(RunningKnockback());
+            RB.AddForce(new Vector2(overrideKnockback, 0), ForceMode2D.Impulse);
+            StartCoroutine(ResetAttackTypeDelayed(.5f));
         }
 
         public IEnumerator CatchUpToCamera()
@@ -273,7 +318,7 @@ namespace RoShamBot
             yield return new WaitForSeconds(3f);
             if (!isCatchingUp) yield break;
             Debug.Log("Catching up...");
-            this.speed += .5f;
+            speed = initialSpeed + .5f;
         }
 
         #endregion
