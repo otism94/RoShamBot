@@ -41,6 +41,11 @@ namespace RoShamBot
         private KeyCode[] attackInputs;
         private Coroutine attackCoroutine;
 
+        [Header("SFX")]
+        [SerializeField] private AudioClip winSFX;
+        [SerializeField] private AudioClip drawSFX;
+        [SerializeField] private AudioClip loseSFX;
+
         #endregion
 
         #region Setup & Update
@@ -160,7 +165,7 @@ namespace RoShamBot
                         new Vector2(transform.position.x + bubbleOffset.x, transform.position.y + bubbleOffset.y),
                         RPS.Instance.bubble.transform.rotation,
                         transform);
-                    bubble.transform.localScale = new Vector3(.9f, .9f, .9f);
+                    bubble.transform.localScale = new Vector3(1.5f, 1.5f, 1f);
                     Instantiate(hitbox, transform);
                     SetAttackType(key);
                     attackCoroutine = StartCoroutine(ResetAttackTypeDelayed());
@@ -230,7 +235,7 @@ namespace RoShamBot
 
             // Reset attack type and destroy bubble and hand sprites.
             currentAttackType = RPS.Shoot.none;
-            for (int i = 0; i < transform.childCount; i++) Destroy(transform.GetChild(i).gameObject);
+            for (int i = 1; i < transform.childCount; i++) Destroy(transform.GetChild(i).gameObject);
         }
 
         /// <summary>
@@ -246,7 +251,7 @@ namespace RoShamBot
 
             // Reset attack type and destroy bubble and hand sprites.
             currentAttackType = RPS.Shoot.none;
-            for (int i = 0; i < transform.childCount; i++) Destroy(transform.GetChild(i).gameObject);
+            for (int i = 1; i < transform.childCount; i++) Destroy(transform.GetChild(i).gameObject);
         }
 
         /// <summary>
@@ -264,7 +269,7 @@ namespace RoShamBot
 
             // Reset attack type and destroy bubble and hand sprites.
             currentAttackType = RPS.Shoot.none;
-            for (int i = 0; i < transform.childCount; i++) Destroy(transform.GetChild(i).gameObject);
+            for (int i = 1; i < transform.childCount; i++) Destroy(transform.GetChild(i).gameObject);
         }
 
         private IEnumerator RunningKnockback()
@@ -279,10 +284,15 @@ namespace RoShamBot
             if (!battleMode.active) isMoving = true;
         }
 
-        public void Win() => StartCoroutine(ResetAttackTypeDelayed(.5f));
+        public void Win() 
+        {
+            Audio.Instance.Source.PlayOneShot(winSFX, 0.5f);
+            StartCoroutine(ResetAttackTypeDelayed(.5f));
+        }
 
         public void Draw()
         {
+            Audio.Instance.Source.PlayOneShot(drawSFX, 0.9f);
             StartCoroutine(RunningKnockback());
             RB.AddForce(new Vector2(drawKnockback, 0), ForceMode2D.Impulse);
             StartCoroutine(ResetAttackTypeDelayed(.5f));
@@ -290,6 +300,7 @@ namespace RoShamBot
 
         public void Draw(float overrideKnockback = 0) 
         {
+            Audio.Instance.Source.PlayOneShot(drawSFX, 0.9f);
             StartCoroutine(RunningKnockback());
             RB.AddForce(new Vector2(overrideKnockback, 0), ForceMode2D.Impulse);
             StartCoroutine(ResetAttackTypeDelayed(.5f));
@@ -297,6 +308,7 @@ namespace RoShamBot
 
         public void Lose()
         {
+            Audio.Instance.Source.PlayOneShot(loseSFX, 0.9f);
             currentHealth -= 1;
             HealthDisplay.Instance.UpdateHealthDisplay();
             StartCoroutine(RunningKnockback());
@@ -306,6 +318,7 @@ namespace RoShamBot
 
         public void Lose(float overrideKnockback = 0)
         {
+            Audio.Instance.Source.PlayOneShot(loseSFX, 0.9f);
             currentHealth -= 1;
             HealthDisplay.Instance.UpdateHealthDisplay();
             StartCoroutine(RunningKnockback());

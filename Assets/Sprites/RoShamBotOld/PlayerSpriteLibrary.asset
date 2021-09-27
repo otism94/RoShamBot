@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bf7c34a0dc4e6348bea04faa70406ee, type: 3}
+  m_Name: PlayerSpriteLibrary
+  m_EditorClassIdentifier: 
+  m_Labels:
+  - m_Name: Run
+    m_Hash: 1748754976
+    m_CategoryList:
+    - m_Name: -2
+      m_Hash: -1457251952
+      m_Sprite: {fileID: 21300000, guid: bb8efd0234a29154fa644793bec177ca, type: 3}
+    - m_Name: -1
+      m_Hash: 808273962
+      m_Sprite: {fileID: 21300000, guid: 84d1f49ff1e019e4b9db94f093aa5545, type: 3}
+    - m_Name: 0
+      m_Hash: -186917087
+      m_Sprite: {fileID: 21300000, guid: c7fa8b1da6b79e3479c54e074fb88577, type: 3}
+    - m_Name: 1
+      m_Hash: -2082672713
+      m_Sprite: {fileID: 21300000, guid: cfa73a9085d3bbc488d131f4f85f4189, type: 3}
+    - m_Name: 2
+      m_Hash: 450215437
+      m_Sprite: {fileID: 21300000, guid: 67e40426a82afb245b0b85645a5fbc83, type: 3}

@@ -14,7 +14,7 @@ namespace RoShamBot
                 HealthDisplay.Instance.RemoveAllHearts();
                 Player.Instance.SetHealthTo(0);
             }
-            else if (collision.gameObject.CompareTag("Enemy")) collision.gameObject.GetComponent<EnemyObstacle>().SetHealthTo(0);
+            else if (collision.gameObject.CompareTag("Enemy") && Player.Instance.battleMode.active) collision.gameObject.GetComponent<EnemyObstacle>().SetHealthTo(0);
         }
     }
 }

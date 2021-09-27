@@ -154,16 +154,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 968e02f24b4e3bf449b6567a0bd40305, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyAttack: 0
-  bubbleOffset: {x: 0, y: 0}
+  initialHealth: 1
   fixedShoot: 1
   includeShoots: 
-  displayIntent: 0
-  initialHealth: 1
-  currentHealth: 0
+  overridePlayerDrawKnockback: 0
+  overridePlayerLoseKnockback: 0
   flipped: 0
   unflippedLever: {fileID: 6647288995969615565}
   flippedLever: {fileID: 988078098984722755}
+  bridge: {fileID: 0}
+  flipSFX: {fileID: 8300000, guid: 0eb6e2f882f6eea448abd74cfb4190e0, type: 3}
 --- !u!1 &6647288995969615565
 GameObject:
   m_ObjectHideFlags: 0

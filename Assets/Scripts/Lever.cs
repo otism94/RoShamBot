@@ -10,6 +10,7 @@ namespace RoShamBot
         [SerializeField] private GameObject unflippedLever;
         [SerializeField] private GameObject flippedLever;
         [SerializeField] private PaperBridge bridge;
+        [SerializeField] private AudioClip flipSFX;
 
         protected override void Update()
         {
@@ -28,6 +29,7 @@ namespace RoShamBot
 
         public override void ClearObstacle()
         {
+            Audio.Instance.Source.PlayOneShot(flipSFX);
             flipped = true;
             unflippedLever.SetActive(false);
             flippedLever.SetActive(true);
