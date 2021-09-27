@@ -292,7 +292,7 @@ namespace RoShamBot
 
         public void Draw()
         {
-            Audio.Instance.Source.PlayOneShot(drawSFX, 0.9f);
+            Audio.Instance.Source.PlayOneShot(drawSFX, 1f);
             StartCoroutine(RunningKnockback());
             RB.AddForce(new Vector2(drawKnockback, 0), ForceMode2D.Impulse);
             StartCoroutine(ResetAttackTypeDelayed(.5f));
@@ -300,7 +300,7 @@ namespace RoShamBot
 
         public void Draw(float overrideKnockback = 0) 
         {
-            Audio.Instance.Source.PlayOneShot(drawSFX, 0.9f);
+            Audio.Instance.Source.PlayOneShot(drawSFX, 1f);
             StartCoroutine(RunningKnockback());
             RB.AddForce(new Vector2(overrideKnockback, 0), ForceMode2D.Impulse);
             StartCoroutine(ResetAttackTypeDelayed(.5f));
