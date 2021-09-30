@@ -17,6 +17,9 @@ namespace RoShamBot
         [SerializeField] private Sprite winSprite;
         [SerializeField] private Sprite drawSprite;
         [SerializeField] private Sprite loseSprite;
+        [SerializeField] private GameObject backgroundDim;
+        [SerializeField] private GameObject playerSpotlight;
+        [SerializeField] private GameObject enemySpotlight;
         private bool roundStarted = false;
         private bool playerCanInput = false;
 
@@ -32,6 +35,13 @@ namespace RoShamBot
             DontDestroyOnLoad(this.gameObject);
         }
 
+        private void Start() 
+        { 
+            RenderSettings.ambientLight = Color.grey;
+            playerSpotlight.transform.position = new Vector3(Player.Instance.transform.position.x, playerSpotlight.transform.position.y, -1.5f);
+            enemySpotlight.transform.position = new Vector3(enemy.transform.position.x, enemySpotlight.transform.position.y, -1.5f);
+        }
+
         // Update is called once per frame
         void Update()
         {
@@ -40,6 +50,9 @@ namespace RoShamBot
             if (playerCanInput) Player.Instance.HandleInput();
 
             if (enemy == null) EndBattleMode();
+
+            playerSpotlight.transform.position = new Vector3(Player.Instance.transform.position.x, playerSpotlight.transform.position.y, -1.5f);
+            enemySpotlight.transform.position = new Vector3(enemy.transform.position.x, enemySpotlight.transform.position.y, -1.5f);
         }
 
         public IEnumerator RoundStart(float precognition = 0.2f, float postcognition = 0.3f)
@@ -78,8 +91,6 @@ namespace RoShamBot
 
         private void DetermineWinner()
         {
-            
-
             if (Player.Instance.currentAttackType != RPS.Shoot.none)
             {
                 RPS.Outcome outcome = RPS.GetOutcome(Player.Instance.Attack, enemy.Attack);
@@ -121,5 +132,7 @@ namespace RoShamBot
             resultInstance.transform.position = new Vector3(transform.position.x, transform.position.y, 5);
             Destroy(resultInstance, 1f);
         }
+
+        private void OnDestroy() => RenderSettings.ambientLight = Color.white;
     }
 }

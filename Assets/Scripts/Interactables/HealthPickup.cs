@@ -18,7 +18,7 @@ namespace RoShamBot
             if (collision.CompareTag("PlayerHurtbox"))
             {
                 Player.Instance.ChangeHealthBy(healAmount);
-                HealthDisplay.Instance.UpdateHealthDisplay();
+                UI.Instance.healthUI.UpdateHealthDisplay();
                 Audio.Instance.Source.PlayOneShot(healSFX);
                 Destroy(this.gameObject);
             }

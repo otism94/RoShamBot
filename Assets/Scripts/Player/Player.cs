@@ -310,7 +310,7 @@ namespace RoShamBot
         {
             Audio.Instance.Source.PlayOneShot(loseSFX, 0.9f);
             currentHealth -= 1;
-            HealthDisplay.Instance.UpdateHealthDisplay();
+            UI.Instance.healthUI.UpdateHealthDisplay();
             StartCoroutine(RunningKnockback());
             RB.AddForce(new Vector2(loseKnockback, 0), ForceMode2D.Impulse);
             StartCoroutine(ResetAttackTypeDelayed(.5f));
@@ -320,7 +320,7 @@ namespace RoShamBot
         {
             Audio.Instance.Source.PlayOneShot(loseSFX, 0.9f);
             currentHealth -= 1;
-            HealthDisplay.Instance.UpdateHealthDisplay();
+            UI.Instance.healthUI.UpdateHealthDisplay();
             StartCoroutine(RunningKnockback());
             RB.AddForce(new Vector2(overrideKnockback, 0), ForceMode2D.Impulse);
             StartCoroutine(ResetAttackTypeDelayed(.5f));

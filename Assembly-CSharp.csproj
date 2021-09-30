@@ -54,27 +54,30 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Assets\Platformer Tileset\Materials\GradientSky\Scripts\GradientSkyObject.cs" />
-    <Compile Include="Assets\Scripts\Lever.cs" />
+    <Compile Include="Assets\Scripts\Interactables\Lever.cs" />
     <Compile Include="Assets\Scripts\HealthDisplay.cs" />
-    <Compile Include="Assets\Scripts\PaperBridge.cs" />
-    <Compile Include="Assets\Scripts\Grunt.cs" />
-    <Compile Include="Assets\Scripts\BattleMode.cs" />
-    <Compile Include="Assets\Scripts\Enemy.cs" />
-    <Compile Include="Assets\Scripts\ScissorWall.cs" />
-    <Compile Include="Assets\Scripts\Obstacle.cs" />
+    <Compile Include="Assets\Scripts\Player\PaperBridge.cs" />
+    <Compile Include="Assets\Scripts\EnemyObstacle\Enemies\Grunt.cs" />
+    <Compile Include="Assets\Scripts\Player\BattleMode.cs" />
+    <Compile Include="Assets\Scripts\EnemyObstacle\Enemies\Enemy.cs" />
+    <Compile Include="Assets\Scripts\EnemyObstacle\Obstacles\ScissorWall.cs" />
+    <Compile Include="Assets\Scripts\EnemyObstacle\Obstacles\PaperAeroplane.cs" />
+    <Compile Include="Assets\Scripts\Interactables\HealthPickup.cs" />
+    <Compile Include="Assets\Scripts\EnemyObstacle\Obstacles\Obstacle.cs" />
     <Compile Include="Assets\Platformer Tileset\Materials\GradientSky\Scripts\Common\GradientSkyCommon.cs" />
-    <Compile Include="Assets\Scripts\CreateBridgeOnDefeat.cs" />
-    <Compile Include="Assets\Scripts\RPS.cs" />
-    <Compile Include="Assets\Scripts\CameraController.cs" />
-    <Compile Include="Assets\Scripts\DeathZone.cs" />
-    <Compile Include="Assets\Scripts\OnDestroyEvent.cs" />
+    <Compile Include="Assets\Scripts\EnemyObstacle\Destroy Events\CreateBridgeOnDefeat.cs" />
+    <Compile Include="Assets\Scripts\Managers\RPS.cs" />
+    <Compile Include="Assets\Scripts\Managers\CameraController.cs" />
+    <Compile Include="Assets\Scripts\Interactables\Target.cs" />
+    <Compile Include="Assets\Scripts\Interactables\DeathZone.cs" />
+    <Compile Include="Assets\Scripts\EnemyObstacle\OnDestroyEvent.cs" />
     <Compile Include="Assets\Platformer Tileset\Materials\GradientSky\Scripts\GradientSkyCamera.cs" />
-    <Compile Include="Assets\Scripts\EnemyObstacle.cs" />
-    <Compile Include="Assets\Scripts\Audio.cs" />
-    <Compile Include="Assets\Scripts\Player.cs" />
-    <Compile Include="Assets\Scripts\HealthPickup.cs" />
-    <Compile Include="Assets\Scripts\PaperAeroplane.cs" />
-    <Compile Include="Assets\Scripts\Target.cs" />
+    <Compile Include="Assets\Scripts\EnemyObstacle\EnemyObstacle.cs" />
+    <Compile Include="Assets\Scripts\Managers\Audio.cs" />
+    <Compile Include="Assets\Scripts\Player\Player.cs" />
+    <Compile Include="Assets\Scripts\UI\HealthUI.cs" />
+    <Compile Include="Assets\Scripts\UI\UI.cs" />
+    <Compile Include="Assets\Scripts\UI\BattleModeUI.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
