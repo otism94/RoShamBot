@@ -10,12 +10,16 @@ namespace RoShamBot
         protected bool displayIntent = true;
         [SerializeField, Tooltip("Position offset of the intent bubble, relative to the enemy sprite.")]
         protected Vector2 bubbleOffset;
+        [SerializeField, Tooltip("Scale of the intent bubble, relative to the enemy object.")]
+        protected Vector3 bubbleScale = new Vector3(1, 1);
         [SerializeField, Tooltip("The distance the player must be from the enemy to initiate battle mode.")]
         protected float battleModeDistance = 4f;
         protected bool isStationary = true;
         protected Rigidbody2D RB;
         [SerializeField] protected float drawKnockback = 2;
         [SerializeField] protected float loseKnockback = 3;
+        [SerializeField, Tooltip("Position of intent bubble objects as children of this object. Usually 0 unless they have an additional mechanic.")]
+        protected int intentChildOffset = 0;
 
         // Start is called before the first frame update
         protected override void Start() 
@@ -54,6 +58,7 @@ namespace RoShamBot
                 new Vector2(transform.position.x + bubbleOffset.x, transform.position.y + bubbleOffset.y),
                 RPS.Instance.bubble.transform.rotation,
                 transform);
+            bubble.transform.localScale = bubbleScale;
             bubble.GetComponent<SpriteRenderer>().flipX = true;
             bubble.GetComponent<SpriteRenderer>().color = new Color(1, .6f, .6f);
 
@@ -81,9 +86,9 @@ namespace RoShamBot
         /// Destroys all child objects of the Enemy. Intended to remove attack bubble and hand sprites.
         /// </summary>
         /// <param name="offset">(Optional) Number of children to skip over.</param>
-        public void RemoveIntentBubble(int offset = 0)
+        public void RemoveIntentBubble()
         {
-            for (int i = 0 + offset; i < transform.childCount; i++) Destroy(transform.GetChild(i).gameObject);
+            for (int i = 0 + intentChildOffset; i < transform.childCount; i++) Destroy(transform.GetChild(i).gameObject);
         }
 
         public override void Win() 
@@ -97,7 +102,6 @@ namespace RoShamBot
             RB.AddForce(new Vector2(drawKnockback, 0), ForceMode2D.Impulse);
             RemoveIntentBubble();
             SetAttack();
-        
         }
 
         public override void Lose() 

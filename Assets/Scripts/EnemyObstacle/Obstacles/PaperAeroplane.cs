@@ -7,15 +7,22 @@ namespace RoShamBot
     public class PaperAeroplane : Obstacle
     {
         [SerializeField] private AudioClip planeSFX;
-        private Rigidbody2D RB;
+        [SerializeField] private Vector3 velocity = new Vector3(-10, 0, 0);
+        [SerializeField] private float gravity = 2;
 
         protected override void Start()
         {
             base.Start();
-            RB = this.gameObject.GetComponent<Rigidbody2D>();
-            this.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(1.2f, .75f, 5));
-            RB.AddForce(new Vector2(-50, 3));
+            transform.position = Camera.main.ViewportToWorldPoint(new Vector3(1.2f, .75f, 5));
             Audio.Instance.Source.PlayOneShot(planeSFX, 0.3f);
+        }
+
+        protected override void Update()
+        {
+            base.Update();
+
+            velocity.y -= gravity * Time.deltaTime;
+            transform.position += velocity * Time.deltaTime;
         }
 
         public override void ClearObstacle() => Destroy(this.gameObject);
@@ -24,10 +31,16 @@ namespace RoShamBot
 
         public override void Win() => ClearObstacle();
 
-        protected override void OnCollisionEnter2D(Collision2D collision)
+        protected override void OnTriggerEnter2D(Collider2D collision)
         {
-            base.OnCollisionEnter2D(collision);
-            ClearObstacle();
+            base.OnTriggerEnter2D(collision);
+
+            if (collision.gameObject.CompareTag("PlayerHurtbox"))
+            {
+                Player.Instance.Lose(-5f);
+                ClearObstacle();
+            }
+            else if (collision.gameObject.CompareTag("Ground")) ClearObstacle();
         }
     }
 }

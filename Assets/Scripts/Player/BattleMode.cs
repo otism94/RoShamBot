@@ -13,11 +13,11 @@ namespace RoShamBot
         public Enemy enemy;
         [SerializeField] private TextMeshProUGUI countdown;
         [SerializeField] private AudioClip countdownClip;
+        [SerializeField] private AudioClip lightActivateClip;
         [SerializeField] private GameObject resultDisplay;
         [SerializeField] private Sprite winSprite;
         [SerializeField] private Sprite drawSprite;
         [SerializeField] private Sprite loseSprite;
-        [SerializeField] private GameObject backgroundDim;
         [SerializeField] private GameObject playerSpotlight;
         [SerializeField] private GameObject enemySpotlight;
         private bool roundStarted = false;
@@ -38,6 +38,7 @@ namespace RoShamBot
         private void Start() 
         { 
             RenderSettings.ambientLight = Color.grey;
+            Audio.Instance.Source.PlayOneShot(lightActivateClip, .6f);
             playerSpotlight.transform.position = new Vector3(Player.Instance.transform.position.x, playerSpotlight.transform.position.y, -1.5f);
             enemySpotlight.transform.position = new Vector3(enemy.transform.position.x, enemySpotlight.transform.position.y, -1.5f);
         }
@@ -45,14 +46,16 @@ namespace RoShamBot
         // Update is called once per frame
         void Update()
         {
-            if (enemy != null && !enemy.Defeated && !roundStarted && enemy.Stationary) StartCoroutine(RoundStart());
-
-            if (playerCanInput) Player.Instance.HandleInput();
-
             if (enemy == null) EndBattleMode();
+            else
+            {
+                if (enemy != null && !enemy.Defeated && !roundStarted && enemy.Stationary) StartCoroutine(RoundStart());
 
-            playerSpotlight.transform.position = new Vector3(Player.Instance.transform.position.x, playerSpotlight.transform.position.y, -1.5f);
-            enemySpotlight.transform.position = new Vector3(enemy.transform.position.x, enemySpotlight.transform.position.y, -1.5f);
+                if (playerCanInput) Player.Instance.HandleInput();
+
+                playerSpotlight.transform.position = new Vector3(Player.Instance.transform.position.x, playerSpotlight.transform.position.y, -1.5f);
+                enemySpotlight.transform.position = new Vector3(enemy.transform.position.x, enemySpotlight.transform.position.y, -1.5f);
+            }
         }
 
         public IEnumerator RoundStart(float precognition = 0.2f, float postcognition = 0.3f)
@@ -83,6 +86,7 @@ namespace RoShamBot
         private void EndBattleMode()
         {
             StopAllCoroutines();
+            enemySpotlight.transform.position = new Vector3(Player.Instance.transform.position.x + 4f, enemySpotlight.transform.position.y, -1.5f);
             active = false;
             playerCanInput = true;
             roundStarted = false;

@@ -285,11 +285,11 @@ MonoBehaviour:
   enemy: {fileID: 0}
   countdown: {fileID: 5876654127773996157}
   countdownClip: {fileID: 8300000, guid: 59ae1e04072f2aa498c367f43e4422b1, type: 3}
+  lightActivateClip: {fileID: 8300000, guid: 1d9b03c89331d9e42ae3aeb7c1b845fd, type: 3}
   resultDisplay: {fileID: 4385763786749604119, guid: 335c46f64f8349b4e9b06d0ab65738d2, type: 3}
   winSprite: {fileID: -5512423737200641622, guid: 10747b077891a7f4bab5bc6b42f6372f, type: 3}
   drawSprite: {fileID: -1030699675726680423, guid: 10747b077891a7f4bab5bc6b42f6372f, type: 3}
   loseSprite: {fileID: -2995469427278679423, guid: 10747b077891a7f4bab5bc6b42f6372f, type: 3}
-  backgroundDim: {fileID: 2006456866111184140}
   playerSpotlight: {fileID: 1540653995402443402}
   enemySpotlight: {fileID: 2570698931415449225}
 --- !u!1001 &140906234070387839
@@ -349,11 +349,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76c10209a2baf494db0c2eee9b0991c7, type: 3}
---- !u!1 &2006456866111184140 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1886098512715977075, guid: 76c10209a2baf494db0c2eee9b0991c7, type: 3}
-  m_PrefabInstance: {fileID: 140906234070387839}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8898746856740024125 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8829916643203982146, guid: 76c10209a2baf494db0c2eee9b0991c7, type: 3}

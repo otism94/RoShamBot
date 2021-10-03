@@ -53,7 +53,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 171ecbdb28167dd46911ae422c8cc0fe, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -97,14 +97,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00f7e52d77f499449aaba1ed490e135a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyAttack: 0
-  bubbleOffset: {x: -1, y: 2.75}
+  initialHealth: 1
   fixedShoot: 0
   includeShoots: 
   displayIntent: 1
-  initialHealth: 1
-  currentHealth: 0
-  isGrounded: 1
+  bubbleOffset: {x: -1, y: 2.75}
+  bubbleScale: {x: 0.25, y: 0.25, z: 0}
+  battleModeDistance: 4
+  drawKnockback: 2
+  loseKnockback: 3
+  intentChildOffset: 0
   deathScream: {fileID: 8300000, guid: df9d8fa799f41fd43abcbe6102e7d19a, type: 3}
 --- !u!61 &5935482723586454840
 BoxCollider2D:

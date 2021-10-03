@@ -50,7 +50,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 6aeb90aec98d55c4cbdd965009291f4a, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -112,6 +112,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: RoShamBot
       objectReference: {fileID: 0}
+    - target: {fileID: 4050733952313352250, guid: 04d0c5da0c79b2a46a53119fcf6b3969, type: 3}
+      propertyPath: m_Bounds.m_Center.x
+      value: -3.079577
+      objectReference: {fileID: 0}
+    - target: {fileID: 4050733952313352250, guid: 04d0c5da0c79b2a46a53119fcf6b3969, type: 3}
+      propertyPath: m_Bounds.m_Center.y
+      value: 0.5674598
+      objectReference: {fileID: 0}
+    - target: {fileID: 4050733952313352250, guid: 04d0c5da0c79b2a46a53119fcf6b3969, type: 3}
+      propertyPath: m_Bounds.m_Extent.x
+      value: 3.4728584
+      objectReference: {fileID: 0}
+    - target: {fileID: 4050733952313352250, guid: 04d0c5da0c79b2a46a53119fcf6b3969, type: 3}
+      propertyPath: m_Bounds.m_Extent.y
+      value: 0.86621255
+      objectReference: {fileID: 0}
     - target: {fileID: 6973340105719566799, guid: 04d0c5da0c79b2a46a53119fcf6b3969, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -155,6 +171,18 @@ PrefabInstance:
     - target: {fileID: 6973340105719566799, guid: 04d0c5da0c79b2a46a53119fcf6b3969, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8525558676190481291, guid: 04d0c5da0c79b2a46a53119fcf6b3969, type: 3}
+      propertyPath: m_Bounds.m_Center.x
+      value: -0.5161804
+      objectReference: {fileID: 0}
+    - target: {fileID: 8525558676190481291, guid: 04d0c5da0c79b2a46a53119fcf6b3969, type: 3}
+      propertyPath: m_Bounds.m_Center.y
+      value: 1.299761
+      objectReference: {fileID: 0}
+    - target: {fileID: 8525558676190481291, guid: 04d0c5da0c79b2a46a53119fcf6b3969, type: 3}
+      propertyPath: m_Bounds.m_Extent.x
+      value: 0.68836427
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 04d0c5da0c79b2a46a53119fcf6b3969, type: 3}

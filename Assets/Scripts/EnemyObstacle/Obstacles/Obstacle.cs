@@ -40,7 +40,7 @@ namespace RoShamBot
         {
             if (collision.gameObject.CompareTag("PlayerHurtbox"))
             {
-                Player.Instance.Lose(-5f);
+                Player.Instance.Lose(-5);
                 if (fixedShoot != RPS.Shoot.none) SetAttack(fixedShoot);
                 else if (includeShoots.Count != 0) SetAttack(includeShoots);
                 else SetAttack();
