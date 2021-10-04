@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace RoShamBot
 {
@@ -18,7 +19,7 @@ namespace RoShamBot
         [Header("Movement")]
         [SerializeField] private float initialSpeed = 5f;
         private float speed;
-        public bool isMoving = true;
+        public bool isMoving = false;
         public bool isCatchingUp = false;
         private Coroutine catchUpCoroutine;
         private Vector2 movementDirection;
@@ -59,7 +60,7 @@ namespace RoShamBot
             }
 
             Instance = this;
-            DontDestroyOnLoad(this.gameObject);
+            //DontDestroyOnLoad(this.gameObject);
         }
 
         // Start is called before the first frame update
@@ -68,7 +69,7 @@ namespace RoShamBot
             RB = this.gameObject.GetComponent<Rigidbody2D>();
             battleMode.active = false;
             movementDirection = Vector2.right;
-            isMoving = true;
+            isMoving = false;
             attackInputs = new KeyCode[] { rockInput, paperInput, scissorsInput };
             currentHealth = initialHealth;
             speed = initialSpeed;
@@ -150,7 +151,14 @@ namespace RoShamBot
             ResetAttackType();
             CameraController.Instance.isMoving = false;
             isMoving = isCatchingUp = false;
-            this.gameObject.GetComponent<SpriteRenderer>().color = Color.clear;
+
+            SpriteRenderer[] spriteRenderers = this.gameObject.transform.GetComponentsInChildren<SpriteRenderer>();
+            foreach (var spriteRenderer in spriteRenderers) spriteRenderer.color = Color.clear;
+
+            if (battleMode.active) ExitBattleMode(BattleMode.Instance.gameObject);
+            Level.Instance.GameOver();
+
+            //SceneManager.LoadScene("Title");
         }
 
         public void HandleInput()
@@ -310,6 +318,7 @@ namespace RoShamBot
         {
             Audio.Instance.Source.PlayOneShot(loseSFX, 0.9f);
             currentHealth -= 1;
+            StartCoroutine(FlashRed());
             UI.Instance.healthUI.UpdateHealthDisplay();
             StartCoroutine(RunningKnockback());
             RB.AddForce(new Vector2(loseKnockback, 0), ForceMode2D.Impulse);
@@ -320,6 +329,7 @@ namespace RoShamBot
         {
             Audio.Instance.Source.PlayOneShot(loseSFX, 0.9f);
             currentHealth -= 1;
+            StartCoroutine(FlashRed());
             UI.Instance.healthUI.UpdateHealthDisplay();
             StartCoroutine(RunningKnockback());
             RB.AddForce(new Vector2(overrideKnockback, 0), ForceMode2D.Impulse);
@@ -332,6 +342,19 @@ namespace RoShamBot
             if (!isCatchingUp) yield break;
             Debug.Log("Catching up...");
             speed = initialSpeed + .5f;
+        }
+
+        public IEnumerator FlashRed()
+        {
+            SpriteRenderer[] spriteRenderers = this.gameObject.transform.GetComponentsInChildren<SpriteRenderer>();
+            for (int i = 0; i < 3; i++)
+            {
+                foreach (var spriteRenderer in spriteRenderers) spriteRenderer.color = Color.red;
+                yield return new WaitForSeconds(0.05f);
+                foreach (var spriteRenderer in spriteRenderers) spriteRenderer.color = Color.white;
+                yield return new WaitForSeconds(0.05f);
+            }
+            
         }
 
         #endregion

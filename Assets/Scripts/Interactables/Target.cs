@@ -14,7 +14,7 @@ namespace RoShamBot
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.CompareTag("PlayerHurtbox")) 
+            if (collision.CompareTag("PlayerHurtbox") || collision.CompareTag("Enemy")) 
             { 
                 Instantiate(paperAeroplane);
                 BC.enabled = false;

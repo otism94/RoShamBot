@@ -17,7 +17,7 @@ namespace RoShamBot
             }
 
             Instance = this;
-            DontDestroyOnLoad(this.gameObject);
+            //DontDestroyOnLoad(this.gameObject);
         }
 
         public AudioSource Source => this.GetComponent<AudioSource>();

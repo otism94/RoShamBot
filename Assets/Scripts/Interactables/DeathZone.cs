@@ -11,10 +11,10 @@ namespace RoShamBot
             if (collision.gameObject.CompareTag("PlayerHurtbox"))
             {
                 Debug.Log("Game Over! (Hit the death zone)");
-                HealthDisplay.Instance.RemoveAllHearts();
+                UI.Instance.healthUI.RemoveAllHearts();
                 Player.Instance.SetHealthTo(0);
             }
-            else if (collision.gameObject.CompareTag("Enemy") && Player.Instance.battleMode.active) collision.gameObject.GetComponent<EnemyObstacle>().SetHealthTo(0);
+            else if (collision.gameObject.CompareTag("Enemy") && !collision.gameObject.TryGetComponent<PaperAeroplane>(out PaperAeroplane plane) && Player.Instance.battleMode.active) collision.gameObject.GetComponent<EnemyObstacle>().SetHealthTo(0);
         }
     }
 }

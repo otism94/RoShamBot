@@ -7,8 +7,8 @@ namespace RoShamBot
     public class PaperAeroplane : Obstacle
     {
         [SerializeField] private AudioClip planeSFX;
-        [SerializeField] private Vector3 velocity = new Vector3(-10, 0, 0);
-        [SerializeField] private float gravity = 2;
+        [SerializeField] private Vector3 velocity = new Vector3(-5, 0, 0);
+        [SerializeField] private float gravity = 1.2f;
 
         protected override void Start()
         {

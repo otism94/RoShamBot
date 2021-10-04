@@ -47,10 +47,7 @@ namespace RoShamBot
             }
         }
 
-        public override void Lose()
-        {
-            currentHealth -= 1;
-        }
+        public override void Lose() => currentHealth -= 1;
 
         protected override void Defeat() => ClearObstacle();
     }

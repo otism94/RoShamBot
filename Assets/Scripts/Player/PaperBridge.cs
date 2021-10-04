@@ -17,8 +17,14 @@ namespace RoShamBot
             {
                 closedBridge.SetActive(false);
                 openBridge.SetActive(true);
-                openBridge.GetComponent<BoxCollider2D>().enabled = true;
+                this.gameObject.GetComponent<BoxCollider2D>().enabled = true;
+                this.gameObject.GetComponent<Rigidbody2D>().simulated = true;
             }
+        }
+
+        private void OnCollisionExit2D(Collision2D collision)
+        {
+            if (collision.gameObject.CompareTag("PlayerHurtbox")) Destroy(this.gameObject);
         }
     }
 }

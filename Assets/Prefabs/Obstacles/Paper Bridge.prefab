@@ -92,8 +92,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2759966176994320355}
   - component: {fileID: 7972946323254625224}
-  - component: {fileID: 7581065236414955087}
-  - component: {fileID: 281571711}
   m_Layer: 0
   m_Name: Paper Bridge_down
   m_TagString: Untagged
@@ -166,53 +164,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &7581065236414955087
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4275278679290136186}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -2.4273171}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 5, y: 5}
-    newSize: {x: 5, y: 5}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 5, y: 0.14536572}
-  m_EdgeRadius: 0
---- !u!50 &281571711
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4275278679290136186}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 7
 --- !u!1 &5855347947473436637
 GameObject:
   m_ObjectHideFlags: 0
@@ -223,6 +174,8 @@ GameObject:
   m_Component:
   - component: {fileID: 44119103892571743}
   - component: {fileID: 1496645399525387232}
+  - component: {fileID: 9039241558133973858}
+  - component: {fileID: 3370921296798304518}
   m_Layer: 0
   m_Name: Paper Bridge
   m_TagString: Untagged
@@ -258,13 +211,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0be42f6c11c7cb2469519b2d27cf8e30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyAttack: 0
-  bubbleOffset: {x: 0, y: 0}
-  fixedShoot: 0
-  includeShoots: 
-  displayIntent: 0
-  initialHealth: 1
-  currentHealth: 0
   closedBridge: {fileID: 3682586461853855698}
   openBridge: {fileID: 4275278679290136186}
   attachedEnemy: {fileID: 0}
+--- !u!61 &9039241558133973858
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5855347947473436637}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -2.4273171}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 5, y: 5}
+    newSize: {x: 5, y: 5}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 5, y: 0.14536572}
+  m_EdgeRadius: 0
+--- !u!50 &3370921296798304518
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5855347947473436637}
+  m_BodyType: 0
+  m_Simulated: 0
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7
